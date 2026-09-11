@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6efe4" />
+    <title>Fluir — estudos com calma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#hoje" aria-label="Fluir, página inicial"><span class="brand-mark">✦</span><span>fluir</span></a>
+        <nav class="main-nav" aria-label="Navegação principal">
+          <a class="nav-link active" href="#hoje" data-view="today"><span>☀</span> Hoje</a>
+          <a class="nav-link" href="#semana" data-view="week"><span>◫</span> Minha semana</a>
+          <a class="nav-link" href="#rotina" data-view="routine"><span>⌁</span> Rotina</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="focus-tip"><span>💡</span><p>Uma coisa de cada vez já é progresso.</p></div>
+          <button class="quiet-button" id="sound-toggle" type="button" aria-pressed="true">🔔 Lembretes ligados</button>
+        </div>
+      </aside>
+
+      <main>
+        <section id="today-view" class="view active">
+          <header class="page-header">
+            <div>
+              <p class="eyebrow" id="date-label">SEGUNDA, 15 DE SETEMBRO</p>
+              <h1>Bom dia, Henrique <span>☀</span></h1>
+              <p class="subtitle">Vamos fazer o que cabe hoje, com gentileza.</p>
+            </div>
+            <button class="primary-button" id="open-task-modal" type="button"><span>＋</span> Nova tarefa</button>
+          </header>
+
+          <section class="focus-card" aria-labelledby="focus-title">
+            <div class="focus-visual"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="spark">✦</span><span class="cup">☕</span></div>
+            <div class="focus-copy">
+              <p class="eyebrow">MODO FOCO</p>
+              <h2 id="focus-title">Seu próximo passo</h2>
+              <p id="next-task-text">Escolha uma tarefa para começar.</p>
+              <button class="soft-button" id="start-next" type="button">Começar agora <span>→</span></button>
+            </div>
+            <div class="timer" aria-live="polite">
+              <span class="timer-label">TEMPO DE FOCO</span>
+              <strong id="timer-display">25:00</strong>
+              <div class="timer-controls"><button id="timer-toggle" type="button" aria-label="Iniciar cronômetro">▶</button><button id="timer-reset" type="button" aria-label="Reiniciar cronômetro">↺</button></div>
+            </div>
+          </section>
+
+          <section class="progress-section" aria-labelledby="progress-title">
+            <div class="section-heading"><div><h2 id="progress-title">Seu ritmo de hoje</h2><p id="progress-copy">Ainda tem espaço para um bom começo.</p></div><strong id="progress-value">0%</strong></div>
+            <div class="progress-track" role="progressbar" aria-label="Tarefas concluídas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progress-bar"></div></div>
+          </section>
+
+          <section class="tasks-section" aria-labelledby="tasks-title">
+            <div class="section-heading tasks-heading"><div><h2 id="tasks-title">Plano do dia</h2><p><span id="task-count">0</span> tarefas para cuidar</p></div><div class="filters" role="group" aria-label="Filtrar tarefas"><button class="filter active" type="button" data-filter="all">Todas</button><button class="filter" type="button" data-filter="high">Prioridade</button><button class="filter" type="button" data-filter="done">Feitas</button></div></div>
+            <div id="task-list" class="task-list"></div>
+            <div id="empty-state" class="empty-state" hidden><span>🌱</span><h3>Seu dia está livre</h3><p>Adicione uma tarefa pequena para começar.</p></div>
+          </section>
+        </section>
+
+        <section id="week-view" class="view">
+          <header class="page-header compact"><div><p class="eyebrow">VISÃO GERAL</p><h1>Minha semana <span>✦</span></h1><p class="subtitle">Um mapa leve para não precisar guardar tudo na cabeça.</p></div></header>
+          <div id="week-grid" class="week-grid"></div>
+        </section>
+
+        <section id="routine-view" class="view">
+          <header class="page-header compact"><div><p class="eyebrow">PEQUENOS RITUAIS</p><h1>Minha rotina <span>⌁</span></h1><p class="subtitle">Marque o que te ajuda a entrar no ritmo.</p></div></header>
+          <div class="routine-intro"><span>🌿</span><p>Rotina não é uma prisão. É um apoio para os dias cheios.</p></div>
+          <div id="routine-list" class="routine-list"></div>
+          <button class="text-button" id="add-routine" type="button">＋ Adicionar hábito</button>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="task-modal" class="task-modal">
+      <form id="task-form" method="dialog">
+        <div class="modal-title"><div><p class="eyebrow">NOVO COMPROMISSO</p><h2>O que vamos fazer?</h2></div><button class="icon-button" type="button" id="close-modal" aria-label="Fechar">×</button></div>
+        <label>Nome da tarefa<input class="field" id="task-title" required maxlength="80" placeholder="Ex.: Revisar capítulo 3" autofocus /></label>
+        <div class="form-row"><label>Horário<input class="field" id="task-time" type="time" value="09:00" required /></label><label>Prioridade<select class="field" id="task-priority"><option value="high">Alta — precisa de foco</option><option value="medium" selected>Média — importante</option><option value="low">Baixa — se der tempo</option></select></label></div>
+        <label>Pequeno passo inicial <input class="field" id="task-note" maxlength="100" placeholder="Ex.: Abrir o material e ler 2 páginas" /></label>
+        <label class="reminder-row"><input type="checkbox" id="task-reminder" checked /> <span><strong>Me lembrar neste horário</strong><small>O alerta funciona enquanto esta página estiver aberta.</small></span></label>
+        <div class="modal-actions"><button class="secondary-button" id="cancel-modal" type="button">Cancelar</button><button class="primary-button" type="submit">Salvar tarefa</button></div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
